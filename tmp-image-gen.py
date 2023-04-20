@@ -113,42 +113,40 @@ while done == False:
     if new_pixel == False:
         done = True
 
+for pixel_array in sorted_pixels:
+    pixel_array.sort()
+optimized_pixels.sort()
 
+last_index = -1
 file = open("tmp_out_part1.txt", "w")
 for sorted_size, pixel_index_array in enumerate(sorted_pixels):
+    out = ''
+    
+    if ((chars_parsed * chars_per_pixel) % (tmp_char_limit - 2) == 0):
+        file.close()
+        file_count += 1
+        file = open("tmp_out_part" + str(file_count) + '.txt', "w")
+        print("tmp_out_part" + str(file_count) + '.txt')
+        out = header
+        force_voffset = True
+        force_mark = True
+
     if sorted_size == 0:
         out += '<size=' + str(size) + '>'
     else:
         out += '<size=' + str(size * (sorted_size+1)) + '>'
 
-################
-    
     for index in pixel_index_array:
+        if index == -1:
+            continue
 
-        out = ''
-        
-        if ((chars_parsed * chars_per_pixel) % (tmp_char_limit - 2) == 0):
-            file.close()
-            file_count += 1
-            file = open("tmp_out_part" + str(file_count) + '.txt', "w")
-            print("tmp_out_part" + str(file_count) + '.txt')
-            out = header
-            force_voffset = True
-            force_mark = True
-            
-        hexcol = rgb_to_hex(index[0], index[1], index[2], index[3])
-        
-        
-        if sorted_size == 0:
-            pass
-        else:
-            pass
-        
+        if int(last_index / im_width) < int(index / im_width) or force_voffset:
+            new_voffset = round((int( index / im_width ) * _height )*-1 + yoffset + optimized2x_once_offset, 4)
+            out += '<voffset=' + str(new_voffset) + 'em>'
 
-            
-        
-        if (optimize2x == True):
-            out += '<size=' + str(size*2) + '>'
+        hexcol = rgb_to_hex(image_data[index][0], image_data[index][1], image_data[index][2], image_data[index][3])
+
+################        
         
         if (last_color != hexcol):
             out += '<mark=' + hexcol + '>'
@@ -176,6 +174,7 @@ for sorted_size, pixel_index_array in enumerate(sorted_pixels):
 
             
         file.write(out)
+        last_index = index
         chars_parsed += 1
     
 file.close()
