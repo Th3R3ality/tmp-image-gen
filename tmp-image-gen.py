@@ -19,22 +19,13 @@ im_height = im.height
 
 image_data = list(im.getdata())
 
-last_height = -1
-last_color = 'none'
-file_count = 0
-tmp_char_limit = 4096
-chars_per_pixel = 2
-force_voffset = False
-force_mark = False
-chars_parsed = 0
-
 size = 10
 xoffset = 0
 yoffset = 0
 character = '_'
 
 
-header = '<align=center><line-height=0%><width=0><size=' + str(size) + '><color=#000>'
+header = '<align=left><line-height=0%><width=0><color=#000>\n'
 
 optimized_pixels = [(-1,-1)]
 last_was_optimized = False
@@ -117,12 +108,29 @@ for pixel_array in sorted_pixels:
     pixel_array.sort()
 optimized_pixels.sort()
 
+
+
+file_limit_reached = False
+file_count = 1
+tmp_char_limit = 4096
+chars_per_pixel = 2
+
+force_voffset = False
+force_mark = False
+chars_parsed = 0
+
+last_color = 'none'
 last_index = -1
+last_size = -1
+
 file = open("tmp_out_part1.txt", "w")
+print("tmp_out_part1.txt")
 for sorted_size, pixel_index_array in enumerate(sorted_pixels):
     out = ''
+    if len(pixel_index_array) < 2:
+        continue
     
-    if ((chars_parsed * chars_per_pixel) % (tmp_char_limit - 2) == 0):
+    if file_limit_reached == True:
         file.close()
         file_count += 1
         file = open("tmp_out_part" + str(file_count) + '.txt', "w")
@@ -141,40 +149,38 @@ for sorted_size, pixel_index_array in enumerate(sorted_pixels):
             continue
 
         if int(last_index / im_width) < int(index / im_width) or force_voffset:
-            new_voffset = round((int( index / im_width ) * _height )*-1 + yoffset + optimized2x_once_offset, 4)
+            new_voffset = round((int( index / im_width - 1 ) * _height )*-1 + yoffset, 4)
             out += '<voffset=' + str(new_voffset) + 'em>'
+            force_voffset = False
 
         hexcol = rgb_to_hex(image_data[index][0], image_data[index][1], image_data[index][2], image_data[index][3])
 
-################        
-        
-        if (last_color != hexcol):
+        if (last_color != hexcol or force_mark):
             out += '<mark=' + hexcol + '>'
             last_color = hexcol
-        
-        if (int( index / im_width ) != last_height or force_voffset == True or optimize2x == True):
-            force_voffset = False
-            if optimize2x == True:
-                force_voffset = True
-                
-            if (optimize2x == False):
-                out += '<voffset=' + str(round((int( index / im_width ) * _height )*-1 + yoffset + optimized2x_once_offset, 4)) + 'em>'
-            if (optimize2x == True):
-                out += '<voffset=' + str(round((int( index / im_width ) * _height )/2*-1 + yoffset + optimized_height_offset, 4)) + 'em>'
+            force_mark = False
             
-            last_height = int( index / im_width )
-        
-        if (optimize2x == False):
-            out += '<pos=' + str(round((( index % im_width ) * 2 + 0 ) * _width + xoffset*2 + optimized_width_offset, 4)) + 'em>' + character
-            out += '<pos=' + str(round((( index % im_width ) * 2 + 1 ) * _width + xoffset*2, 4)) + 'em>' + character
-        
-        if (optimize2x == True):
-            out += '<pos=' + str(round((( index % im_width )) * _width + xoffset + optimized_width_offset, 4)) + 'em>' + character
-            last_was_optimized = True
-
-            
-        file.write(out)
-        last_index = index
+        out += '<pos=' + str(round((( index % im_width ) * 2 + 0 ) * _width + xoffset*2, 4)) + 'em>' + character
         chars_parsed += 1
-    
+        
+        if sorted_size == 0:
+            out += '<pos=' + str(round((( index % im_width ) * 2 + 1 ) * _width + xoffset*2, 4)) + 'em>' + character
+            chars_parsed += 1
+
+        out += '\n'
+        file.write(out)
+        out = ''
+        last_index = index
+        
+        if chars_parsed % tmp_char_limit > 1:
+            file_limit_reached = False
+        
+        if chars_parsed % tmp_char_limit == 1:
+            if file_limit_reached == True:
+                file_limit_reached = False
+            else:
+                file_limit_reached = True
+        if chars_parsed % tmp_char_limit == 0:
+            file_limit_reached = True
+            
 file.close()
