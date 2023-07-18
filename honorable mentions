@@ -1,5 +1,5 @@
 n HAS to be in the double sequence of 1 (so 1, 2, 4, 8, ...)
-
+n CAN also be in halves instead (0.5, 0.25, 0.125)
 
 use
 <width=0>
@@ -9,11 +9,13 @@ use
 <color=#0000> //other color if u want text shown (maybe for better and cheaper gradients?)
 
 <pos=
-xFix + (xFix / n-1) // n could be 0, can divide by 0.
+xFix + (xFix / n) + (xFix / n-1) + (xFix / n-2) + .... // add until n == 0
 >
+
 <voffset=
-yFix + (yFix / n-1) // n could be 0
+yFix + (yFix / n) + (yFix / n-1) + (yFix / n-2) + .... // same as above
 >
+
 
 xFix and yFix values for different chars:
 
