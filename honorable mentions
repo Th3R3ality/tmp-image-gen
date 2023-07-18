@@ -1,0 +1,21 @@
+n HAS to be in the double sequence of 1 (so 1, 2, 4, 8, ...)
+
+
+use
+<width=0>
+<line-height=0>
+<align=center>
+<mark=COLOR> //pixel color
+<color=#0000> //other color if u want text shown (maybe for better and cheaper gradients?)
+
+<pos=
+xFix + (xFix / n-1) // n could be 0, can divide by 0.
+>
+<voffset=
+yFix + (yFix / n-1) // n could be 0
+>
+
+xFix and yFix values for different chars:
+
+@ x = 0.45
+@ y = 0.4525
