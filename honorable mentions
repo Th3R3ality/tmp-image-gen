@@ -17,5 +17,7 @@ yFix + (yFix / n-1) // n could be 0
 
 xFix and yFix values for different chars:
 
-@ x = 0.45
-@ y = 0.4525
+@ x = 0.45e
+@ y = 0.4525e
+@ w = 1.78e
+@ h = 1.117e
