@@ -1,5 +1,6 @@
 // TMPImageGen.cpp : c++ version +it works +not yet +faster +better +stronger
 //
+#define SHOULD_TRY_OPTIMIZE true
 
 #include <iostream>
 #include <vector>
@@ -40,10 +41,11 @@ void GenerateTMP();
 
 Image Img5x5 = { 5, 5, { RGBA(255, 0, 0, 255), RGBA(0, 255, 0, 255), RGBA(0, 0, 255, 255), RGBA(0, 0, 0, 255), RGBA(255, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(0, 255, 144, 255), RGBA(178, 0, 255, 255), RGBA(64, 64, 64, 255), RGBA(255, 255, 255, 200), RGBA(255, 216, 0, 255), RGBA(0, 255, 255, 255), RGBA(255, 0, 220, 255), RGBA(128, 128, 128, 255), RGBA(255, 255, 255, 150), RGBA(182, 255, 0, 255), RGBA(0, 148, 255, 255), RGBA(255, 0, 110, 255), RGBA(160, 160, 160, 255), RGBA(255, 255, 255, 100), RGBA(76, 255, 0, 255), RGBA(0, 38, 255, 255), RGBA(255, 0, 0, 255), RGBA(192, 192, 192, 255), RGBA(255, 255, 255, 50) } };
 Image Img10x10 = { 10, 10, { RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(178, 0, 255, 255), RGBA(178, 0, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(0, 0, 0, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255) } };
-
+Image Img2 = { 10, 10, {RGBA(255, 150, 200, 255), RGBA(255, 163, 137, 255), RGBA(255, 163, 137, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(255, 150, 200, 255), RGBA(255, 163, 137, 255), RGBA(255, 163, 137, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(255, 255, 255, 255), RGBA(255, 163, 137, 255), RGBA(255, 163, 137, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(255, 255, 255, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(255, 127, 182, 255), RGBA(255, 127, 182, 255), RGBA(128, 128, 128, 255), RGBA(64, 64, 64, 255), RGBA(0, 0, 0, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(255, 127, 182, 255), RGBA(255, 127, 182, 255), RGBA(128, 128, 128, 255), RGBA(64, 64, 64, 255), RGBA(0, 0, 0, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(160, 160, 160, 255), RGBA(160, 160, 160, 255), RGBA(128, 128, 128, 255), RGBA(64, 64, 64, 255), RGBA(0, 0, 0, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(192, 192, 192, 255), RGBA(192, 192, 192, 255), RGBA(192, 192, 192, 255), RGBA(64, 64, 64, 255), RGBA(0, 0, 0, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(0, 0, 0, 255)} };
 std::vector<TMPCommand> CommandList;
 
-Image& Img = Img10x10;
+//Image& Img = Img5x5;
+Image& Img = Img2;
 int main(int argc, char** argv)
 {
 
@@ -54,16 +56,22 @@ int main(int argc, char** argv)
         int x = idx % Img.width;
         int y = (int)(idx / Img.width);
         
-        int optimizationLevel = GetOptimizationLevel(idx, processedPixels);
-        if (optimizationLevel != -1) {
-            CommandList.push_back(TMPCommand(x, y, optimizationLevel, Img.data[idx]));
-        }
+        if (SHOULD_TRY_OPTIMIZE) {
+            int optimizationLevel = GetOptimizationLevel(idx, processedPixels);
+            if (optimizationLevel != -1) {
+                //printf("added command: %d    at (%d,%d)\n", optimizationLevel, x, y);
+                CommandList.push_back(TMPCommand(x, y, optimizationLevel, Img.data[idx]));
+            }
         
 
-        MarkProcessedPixel(idx, optimizationLevel, processedPixels);
-        if (x == 0)
-            printf("\n");
-        printf(optimizationLevel == -1 ? "# " : "%d ", optimizationLevel);
+            MarkProcessedPixel(idx, optimizationLevel, processedPixels);
+            if (x == 0)
+                printf("\n");
+            printf(optimizationLevel == -1 ? "# " : "%d ", optimizationLevel);
+        }
+        else {
+            CommandList.push_back(TMPCommand(x, y, 1, Img.data[idx]));
+        }
     }printf("\n");
 
     printf("[");
@@ -83,23 +91,18 @@ int GetOptimizationLevel(int Idx, int* ProcessedPixelsList) {
     if (ProcessedPixelsList[Idx] != 0) {
         return -1;
     }
-    if (Idx + Img.width >= Img.width * Img.height) {
-        return level;
-    }
-    if (Img.data[Idx] != Img.data[Idx + Img.width]) {
-        return level;
-    }
     int newLevel = level + 1;
-    while (Idx + Img.width * ((newLevel * 2)-1) + newLevel-1 < Img.width * Img.height) { 
+    while (Idx + (newLevel - 1 /*fix bottom right corner*/ )
+        + Img.width * (newLevel - 1 /*fix bottom*/ ) < Img.width * Img.height) {
         
-        for (int y = 0; y < (newLevel * 2); y++) {
-            for (int x = 0; x < newLevel; x++) {
+        for (int x = 0; x < newLevel; x++) {
+            for (int y = 0; y < newLevel; y++) {
                 if (Img.data[Idx] != Img.data[Idx + x + y * Img.width]) {
                     return level;
                 }
             }
         }
-        if (Idx % Img.width + (newLevel) > Img.width) {
+        if (Idx % Img.width + newLevel > Img.width) {
             return level;
         }
         level = newLevel;
@@ -110,8 +113,8 @@ int GetOptimizationLevel(int Idx, int* ProcessedPixelsList) {
 }
 
 void MarkProcessedPixel(int Idx, int OptimizationLevel, int* ProcessedPixelsList) {
-    for (int y = 0; y < (OptimizationLevel * 2); y++) {
-        for (int x = 0; x < OptimizationLevel; x++) {
+    for (int x = 0; x < OptimizationLevel; x++) {
+        for (int y = 0; y < OptimizationLevel; y++) {
             if (x == 0 && y == 0) {
                 ProcessedPixelsList[Idx + x + y * Img.width] = OptimizationLevel;
                 continue;
@@ -132,17 +135,17 @@ void GenerateTMP() {
     std::string header = { "<line-height=0><width=0><align=center>\n<mark=#ff005055><color=#0000>\n" };
     std::string out = header;
     
-    int size = -1;
+    int size = 1;
     int y = -1;
     for (auto& cmd : CommandList) {
         if (size != cmd.size) {
-            out += "\n<size=" + std::to_string(pow(2, cmd.size)) + "e>";
+            out += "\n<size=" + std::to_string(pow(2, cmd.size-1)) + "e>";
         }
 
         if (y != cmd.y || size != cmd.size) {
             y = cmd.y;
 
-            double voffset = y / (cmd.size + 1) * SymbolHeight;
+            double voffset = (double)y / (double)cmd.size * SymbolHeight;
 
             double yFix = 0;
             if (cmd.size > 0) {
@@ -157,17 +160,13 @@ void GenerateTMP() {
         }
         
 
-        double pos = (cmd.x*2) / (cmd.size+1) * SymbolWidth;
+        double pos = cmd.x / cmd.size * SymbolWidth;
         if (cmd.size > 0) {
             double fixer = 1;
             for (int i = 0; i < cmd.size; i++) {
                 pos += SymbolXFix * fixer;
                 fixer *= 0.5;
             }
-        }
-        else {
-            out += "<pos=" + std::to_string(pos+SymbolWidth) + "e>";
-            out += SymbolChar;
         }
         out += "<pos=" + std::to_string(pos) + "e>";
         out += SymbolChar;
