@@ -6,6 +6,11 @@
 #include <vector>
 #include <string>
 
+int GetOptimizationLevel(int Idx, int* ProcessedPixelsList);
+void MarkProcessedPixel(int Idx, int OptimizationLevel, int* ProcessedPixelsList);
+void GenerateTMP();
+std::string itohexstr(unsigned int i, unsigned int bytes = 2);
+
 struct RGBA {
 public:
     int r, g, b, a;
@@ -17,6 +22,10 @@ public:
     }
     bool operator!=(RGBA& other) {
         return (!(r == other.r && g == other.g && b == other.b && a == other.a));
+    }
+
+    std::string HexString() {
+        return std::string("#") + itohexstr(r) + itohexstr(g) + itohexstr(b) + itohexstr(a);
     }
 };
 struct Image {
@@ -35,9 +44,8 @@ public:
     TMPCommand(int x, int y, int size, RGBA color) : x(x), y(y), size(size), color(color) {};
 };
 
-int GetOptimizationLevel(int Idx, int* ProcessedPixelsList);
-void MarkProcessedPixel(int Idx, int OptimizationLevel, int* ProcessedPixelsList);
-void GenerateTMP();
+
+
 
 Image Img5x5 = { 5, 5, { RGBA(255, 0, 0, 255), RGBA(0, 255, 0, 255), RGBA(0, 0, 255, 255), RGBA(0, 0, 0, 255), RGBA(255, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(0, 255, 144, 255), RGBA(178, 0, 255, 255), RGBA(64, 64, 64, 255), RGBA(255, 255, 255, 200), RGBA(255, 216, 0, 255), RGBA(0, 255, 255, 255), RGBA(255, 0, 220, 255), RGBA(128, 128, 128, 255), RGBA(255, 255, 255, 150), RGBA(182, 255, 0, 255), RGBA(0, 148, 255, 255), RGBA(255, 0, 110, 255), RGBA(160, 160, 160, 255), RGBA(255, 255, 255, 100), RGBA(76, 255, 0, 255), RGBA(0, 38, 255, 255), RGBA(255, 0, 0, 255), RGBA(192, 192, 192, 255), RGBA(255, 255, 255, 50) } };
 Image Img10x10 = { 10, 10, { RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(178, 0, 255, 255), RGBA(178, 0, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(0, 0, 0, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255) } };
@@ -135,12 +143,24 @@ void GenerateTMP() {
     double SymbolHeight = 1.117;
 
 
-    std::string header = { "<line-height=0><width=0><align=center>\n<mark=#ff005055><color=#0000>\n" };
+    std::string header = { "<line-height=0><width=0><align=center>\n<mark=#000f><color=#000f>\n" };
     std::string out = header;
     
     int size = 1;
     int y = -1;
+    RGBA c(-1, -1, -1, -1);
     for (auto& cmd : CommandList) {
+        if (cmd.color.a < (0xff / 3))
+            continue;
+        if (c != cmd.color) {
+            c = cmd.color;
+
+            out += 
+                "<mark="
+                + c.HexString() +
+                ">";
+        }
+
         if (size != cmd.size) {
             out += "\n<size=" + std::to_string(cmd.size) + "e>";
         }
@@ -182,4 +202,17 @@ void GenerateTMP() {
 
     printf("\n");
     std::cout << out << std::endl;
+}
+
+std::string itohexstr(unsigned int i, unsigned int bytes) {
+    std::string out = "";
+    while (bytes > 0) {
+        std::string buf = "?";
+        unsigned int temp = i - (i & 0xFFFFFFF0);
+        buf = (temp > 9 ? (char)(temp - 10 + 'A') : (char)(temp + '0'));
+        out = std::string(buf) + out;
+        i >>= sizeof(int);
+        bytes -= 1;
+    }
+    return out;
 }
