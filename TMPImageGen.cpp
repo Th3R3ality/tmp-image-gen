@@ -45,7 +45,7 @@ Image Img2 = { 10, 10, {RGBA(255, 150, 200, 255), RGBA(255, 163, 137, 255), RGBA
 std::vector<TMPCommand> CommandList;
 
 //Image& Img = Img5x5;
-Image& Img = Img2;
+Image& Img = Img10x10;
 int main(int argc, char** argv)
 {
 
@@ -127,10 +127,13 @@ void MarkProcessedPixel(int Idx, int OptimizationLevel, int* ProcessedPixelsList
 void GenerateTMP() {
 
     std::string SymbolChar = "@";
-    double SymbolXFix = 0.45;
-    double SymbolYFix = 0.45275;
+    double SymbolXFixBase = 0.4505;
+    double SymbolXFixMargin = 0.15025;
+    double SymbolYFixBase = 0.4525;
+    double SymbolYFixMargin = 0.151;
     double SymbolWidth = 1.78;
     double SymbolHeight = 1.117;
+
 
     std::string header = { "<line-height=0><width=0><align=center>\n<mark=#ff005055><color=#0000>\n" };
     std::string out = header;
@@ -139,20 +142,21 @@ void GenerateTMP() {
     int y = -1;
     for (auto& cmd : CommandList) {
         if (size != cmd.size) {
-            out += "\n<size=" + std::to_string(pow(2, cmd.size-1)) + "e>";
+            out += "\n<size=" + std::to_string(cmd.size) + "e>";
         }
 
         if (y != cmd.y || size != cmd.size) {
             y = cmd.y;
 
-            double voffset = (double)y / (double)cmd.size * SymbolHeight;
+            double voffset = (y * SymbolHeight) / cmd.size;
 
-            double yFix = 0;
-            if (cmd.size > 0) {
-                double fixer = 1;
-                for (int i = 0; i < cmd.size; i++) {
-                    voffset += SymbolYFix * fixer;
-                    fixer *= 0.5;
+            if (cmd.size > 1) {
+                voffset += SymbolYFixBase;
+                double fixer = SymbolYFixMargin;
+
+                for (int i = 0; i < cmd.size - 2; i++) {
+                    voffset += fixer;
+                    fixer = fixer/2;
                 }
             }
             
@@ -160,12 +164,13 @@ void GenerateTMP() {
         }
         
 
-        double pos = cmd.x / cmd.size * SymbolWidth;
-        if (cmd.size > 0) {
-            double fixer = 1;
-            for (int i = 0; i < cmd.size; i++) {
-                pos += SymbolXFix * fixer;
-                fixer *= 0.5;
+        double pos = (cmd.x * SymbolWidth) / cmd.size;
+        if (cmd.size > 1) {
+            pos += SymbolXFixBase;
+            double fixer = SymbolXFixMargin;
+            for (int i = 0; i < cmd.size - 2; i++) {
+                pos += fixer;
+                fixer = fixer/2;
             }
         }
         out += "<pos=" + std::to_string(pos) + "e>";
