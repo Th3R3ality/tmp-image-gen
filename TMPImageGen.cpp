@@ -3,6 +3,8 @@
 #define SHOULD_TRY_OPTIMIZE true
 
 #include <Windows.h>
+#include <tchar.h>
+
 #include <thread>
 #include <chrono>
 
@@ -53,23 +55,136 @@ public:
     TMPCommand(int x, int y, int size, RGBA color) : x(x), y(y), size(size), color(color) {};
 };
 
-
-Image Img5x5 = { 5, 5, { RGBA(255, 0, 0, 255), RGBA(0, 255, 0, 255), RGBA(0, 0, 255, 255), RGBA(0, 0, 0, 255), RGBA(255, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(0, 255, 144, 255), RGBA(178, 0, 255, 255), RGBA(64, 64, 64, 255), RGBA(255, 255, 255, 200), RGBA(255, 216, 0, 255), RGBA(0, 255, 255, 255), RGBA(255, 0, 220, 255), RGBA(128, 128, 128, 255), RGBA(255, 255, 255, 150), RGBA(182, 255, 0, 255), RGBA(0, 148, 255, 255), RGBA(255, 0, 110, 255), RGBA(160, 160, 160, 255), RGBA(255, 255, 255, 100), RGBA(76, 255, 0, 255), RGBA(0, 38, 255, 255), RGBA(255, 0, 0, 255), RGBA(192, 192, 192, 255), RGBA(255, 255, 255, 50) } };
-Image Img10x10 = { 10, 10, { RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(76, 255, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 0, 255), RGBA(255, 0, 0, 255), RGBA(178, 0, 255, 255), RGBA(178, 0, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(0, 38, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(0, 0, 0, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(255, 106, 0, 255), RGBA(255, 106, 0, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(255, 0, 220, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255), RGBA(0, 255, 255, 255) } };
-Image Img2 = { 10, 10, {RGBA(255, 150, 200, 255), RGBA(255, 163, 137, 255), RGBA(255, 163, 137, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(255, 150, 200, 255), RGBA(255, 163, 137, 255), RGBA(255, 163, 137, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(255, 255, 255, 255), RGBA(255, 163, 137, 255), RGBA(255, 163, 137, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(224, 255, 140, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(255, 255, 255, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(165, 255, 185, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(255, 127, 182, 255), RGBA(255, 127, 182, 255), RGBA(128, 128, 128, 255), RGBA(64, 64, 64, 255), RGBA(0, 0, 0, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(255, 127, 182, 255), RGBA(255, 127, 182, 255), RGBA(128, 128, 128, 255), RGBA(64, 64, 64, 255), RGBA(0, 0, 0, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(160, 160, 160, 255), RGBA(160, 160, 160, 255), RGBA(128, 128, 128, 255), RGBA(64, 64, 64, 255), RGBA(0, 0, 0, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(192, 192, 192, 255), RGBA(192, 192, 192, 255), RGBA(192, 192, 192, 255), RGBA(64, 64, 64, 255), RGBA(0, 0, 0, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(163, 250, 255, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(255, 255, 255, 255), RGBA(0, 0, 0, 255)} };
-
-Image Blun = { 30, 22,  {RGBA(121, 124, 129, 30),RGBA(121, 124, 129, 35),RGBA(0, 0, 0, 0),RGBA(56, 112, 94, 31),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0,
-0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(121, 124, 129, 2),RGBA(121, 124, 129, 1),RGBA(56, 112, 94, 1),RGBA(56, 112, 94, 12),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(56, 112, 94, 10),RGBA(121, 124, 129, 1),RGBA(56, 112, 94, 7),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(0, 0,
-0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(56, 112, 94, 36),RGBA(56, 112, 94, 34),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(69, 149, 200, 255),RGBA(69, 149, 200, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(56, 112, 94, 18),RGBA(56, 112, 94, 10),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(69, 149, 200, 255),RGBA(69, 149, 200, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(254, 221, 228, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(56, 112, 94, 4),RGBA(121, 124, 129, 52),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(206,
-189, 99, 255),RGBA(206, 189, 99, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(121, 124, 129, 5),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(206, 189, 99, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(121, 124, 129, 22),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(227,
-151, 133, 255),RGBA(227, 151, 133, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(227, 151, 133, 255),RGBA(227, 151, 133, 255),RGBA(227, 151, 133, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(227, 151, 133, 255),RGBA(227, 151, 133, 255),RGBA(227, 151, 133, 255),RGBA(227, 151, 133, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(121, 124, 129, 26),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(255, 255, 255, 255),RGBA(112, 176, 211, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(227, 151, 133, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(121, 124, 129, 19),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(255, 255, 255, 255),RGBA(206, 189, 99, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(227, 151, 133, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(27, 50, 94, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(121, 124, 129, 4),RGBA(210, 54, 39, 255),RGBA(210, 54, 39, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(112, 176, 211, 255),RGBA(252, 237, 232, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 232),RGBA(210, 54, 39, 255),RGBA(210, 54, 39, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255,
-255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(227, 151, 133, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(206, 189, 99, 255),RGBA(252, 237, 232, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(210, 54, 39, 255),RGBA(210, 54, 39, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(227, 151, 133, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(210, 54, 39, 255),RGBA(210, 54, 39, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(255, 255, 255, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(252, 237, 232, 255),RGBA(227, 151, 133, 255),RGBA(160, 84, 76, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(160, 84, 76, 255),RGBA(160, 84, 76, 255),RGBA(160, 84, 76, 255),RGBA(227, 151, 133, 255),RGBA(227, 151, 133, 255),RGBA(160, 84, 76, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(176, 79,
-106, 255),RGBA(250, 169, 188, 255),RGBA(247, 246, 247, 255),RGBA(176, 79, 106, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(247, 246, 247, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(247, 246, 247, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(247, 246, 247, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 0),RGBA(0, 0, 0, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(247, 246, 247, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(176, 79, 106, 255),RGBA(176, 79, 106, 255),RGBA(0, 0, 0, 255),RGBA(250, 169, 188, 255),RGBA(250, 169, 188, 255),RGBA(247, 246, 247, 255),RGBA(250, 169, 188, 255),RGBA(0, 0, 0, 255),RGBA(0, 0, 0, 255)} };
 std::vector<TMPCommand> CommandList;
 
-Image& Img = Blun;
+
+Image a = { 0, 0, {} };
+Image& Img = a;
+
+char imagePath[MAX_PATH];
+FILE* outFile;
+
 int main(int argc, char** argv)
 {
+    printf("argc: %d\n", argc);
+    for (int i = 0; i < argc; i++) {
+        printf("argv[%d]: %s\n", i, argv[i]);
+    }
+
+    if (argc <= 1) {
+        OPENFILENAMEA ofn;
+        ZeroMemory(&imagePath, sizeof(imagePath));
+        ZeroMemory(&ofn, sizeof(ofn));
+        ofn.lStructSize = sizeof(ofn);
+        ofn.hwndOwner = NULL;  // If you have a window to center over, put its HANDLE here
+        ofn.lpstrFilter = ("PNG File\0*.png\0");
+        ofn.lpstrFile = imagePath;
+        ofn.nMaxFile = MAX_PATH;
+        ofn.lpstrTitle = ("Select Image File");
+        ofn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST;
+        if (GetOpenFileNameA(&ofn)) {
+            printf("image file selected: \"%s\"\n", imagePath);
+        }
+        else {
+            // All this stuff below is to tell you exactly how you messed up above. 
+            // Once you've got that fixed, you can often (not always!) reduce it to a 'user cancelled' assumption.
+            switch (CommDlgExtendedError()) {
+            case CDERR_DIALOGFAILURE: std::cout << "CDERR_DIALOGFAILURE\n";   break;
+            case CDERR_FINDRESFAILURE: std::cout << "CDERR_FINDRESFAILURE\n";  break;
+            case CDERR_INITIALIZATION: std::cout << "CDERR_INITIALIZATION\n";  break;
+            case CDERR_LOADRESFAILURE: std::cout << "CDERR_LOADRESFAILURE\n";  break;
+            case CDERR_LOADSTRFAILURE: std::cout << "CDERR_LOADSTRFAILURE\n";  break;
+            case CDERR_LOCKRESFAILURE: std::cout << "CDERR_LOCKRESFAILURE\n";  break;
+            case CDERR_MEMALLOCFAILURE: std::cout << "CDERR_MEMALLOCFAILURE\n"; break;
+            case CDERR_MEMLOCKFAILURE: std::cout << "CDERR_MEMLOCKFAILURE\n";  break;
+            case CDERR_NOHINSTANCE: std::cout << "CDERR_NOHINSTANCE\n";     break;
+            case CDERR_NOHOOK: std::cout << "CDERR_NOHOOK\n";          break;
+            case CDERR_NOTEMPLATE: std::cout << "CDERR_NOTEMPLATE\n";      break;
+            case CDERR_STRUCTSIZE: std::cout << "CDERR_STRUCTSIZE\n";      break;
+            case FNERR_BUFFERTOOSMALL: std::cout << "FNERR_BUFFERTOOSMALL\n";  break;
+            case FNERR_INVALIDFILENAME: std::cout << "FNERR_INVALIDFILENAME\n"; break;
+            case FNERR_SUBCLASSFAILURE: std::cout << "FNERR_SUBCLASSFAILURE\n"; break;
+            default: std::cout << "You cancelled.\n";
+            }
+            return 1;
+        }
+    }
+    else {
+        memcpy(imagePath, argv[1], strlen(argv[1]));
+        printf("image file selected: \"%s\"\n", imagePath);
+    }
+
+    char* filePath = 0;
+    bool pathCreated = false;
+    int fileNameStart = 0, fileNameEnd = 0, idx = 0;
+
+    int stage = 0;
+    while (!pathCreated) {
+        if (stage == 0) {
+            if (imagePath[idx] == '\0') {
+                stage += 1;
+                fileNameEnd = idx - 1;
+            }
+            else {
+                idx += 1;
+                continue;
+            }
+        }
+        if (stage == 1 || stage == 2) {
+            if (imagePath[idx] == '.') {
+                if (stage == 1) {
+                    fileNameEnd = idx - 1;
+                    stage += 1;
+                    idx -= 1;
+                }
+            }
+            else if (imagePath[idx] == '\\') {
+                fileNameStart = idx + 1;
+                stage = 3;
+            }
+            else {
+                idx -= 1;
+                continue;
+            }
+        }
+        if (stage == 3) {
+            idx = 0;
+            stage += 1;
+        }
+        if (stage == 4) {
+            if (argv[0][idx] == '\0') {
+                stage += 1;
+            }
+            else {
+                idx += 1;
+                continue;
+            }
+        }
+        if (stage == 5) {
+            if (argv[0][idx] == '\\') {
+                filePath = new char[idx + 1 + (fileNameEnd - fileNameStart + 1) + 1 + 4];
+                ZeroMemory(filePath, idx + 1 + (fileNameEnd - fileNameStart + 1) + 1 + 4);
+                memcpy(filePath, argv[0], idx + 1);
+                memcpy(filePath + idx + 1, imagePath + fileNameStart, fileNameEnd - fileNameStart + 1);
+                memcpy(filePath + idx + 1 + (fileNameEnd - fileNameStart + 1), ".txt", 4);
+                printf("assembled path: %s\n", filePath);
+                stage = 6;
+                pathCreated = true;
+                continue;
+            }
+            else {
+                idx -= 1;
+                continue;
+            }
+        }
+    }
+
+    if (fopen_s(&outFile, filePath, "w")) {
+        printf("***ERROR*** COULDN'T CREATE FILE: %s\n", filePath);
+    }
+    printf("created file: %s\n", filePath);
+
+
 
     for (int i = 0; i < Img.width * Img.height; i++) {
         printf("%u\t%u\n",Img.data[i].r, i);
@@ -91,23 +206,24 @@ int main(int argc, char** argv)
 
 
             MarkProcessedPixel(idx, optimizationLevel, processedPixels);
-            //if (x == 0)
-                //printf("\n");
-            //printf(optimizationLevel == -1 ? "# " : "%d ", optimizationLevel);
+            if (x == 0)
+                printf("\n");
+            printf(optimizationLevel == -1 ? "# " : "%d ", optimizationLevel);
         }
         else {
             CommandList.push_back(TMPCommand(x, y, 1, Img.data[idx]));
         }
-    }//printf("\n");
+    }printf("\n");
 
-    //printf("[");
+    printf("[");
     for (auto& cmd : CommandList) {
-        //printf("(%d, %d, %d, (%d,%d,%d,%d)),", cmd.x, cmd.y, cmd.size, cmd.color.r, cmd.color.g, cmd.color.b, cmd.color.a);
+        printf("(%d, %d, %d, (%d,%d,%d,%d)),", cmd.x, cmd.y, cmd.size, cmd.color.r, cmd.color.g, cmd.color.b, cmd.color.a);
     }
-    //printf("]\n");
+    printf("]\n");
 
     GenerateTMP();
 
+    delete[] filePath;
     delete[] processedPixels;
     std::cout << "Done!\n";
 }
@@ -167,7 +283,9 @@ void GenerateTMP()
 
 
     std::string header = { "<line-height=0><width=0><align=center>\n<mark=#000f><color=#000f>\n" };
-    std::string out = header;
+    fwrite(header.c_str(), header.length(), 1, outFile);
+
+    std::string out = ""; //header;
 
     int size = 1;
     int y = -1;
@@ -188,14 +306,16 @@ void GenerateTMP()
                 lastAlpha = c.a;
             }
             */
-            out +=
+            out =
                 "<mark="
                 + c.HexString() +
                 ">";
+            fwrite(out.c_str(), out.length(), 1, outFile);
         }
 
         if (size != cmd.size) {
-            out += "\n<size=" + std::to_string(cmd.size) + "e>";
+            out = "\n<size=" + std::to_string(cmd.size) + "e>";
+            fwrite(out.c_str(), out.length(), 1, outFile);
         }
 
         if (y != cmd.y || size != cmd.size) {
@@ -215,7 +335,8 @@ void GenerateTMP()
                 }
             }
 
-            out += "<voffset=-" + std::to_string(voffset) + "e>\n";
+            out = "<voffset=-" + std::to_string(voffset) + "e>\n";
+            fwrite(out.c_str(), out.length(), 1, outFile);
         }
 
 
@@ -232,8 +353,9 @@ void GenerateTMP()
 
             }
         }
-        out += "<pos=" + std::to_string(pos) + "e>";
+        out = "<pos=" + std::to_string(pos) + "e>";
         out += SymbolChar;
+        fwrite(out.c_str(), out.length(), 1, outFile);
 
         size = cmd.size;
 
