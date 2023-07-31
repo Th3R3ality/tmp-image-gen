@@ -36,10 +36,20 @@ optimized2x_once_offset = 0
 sorted_pixels = [[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1],[-1]]
 optimized_pixels = []
 
+
+print("{", "{0}, {1}, ".format(im_width,im_height), "{",end="")
+for index, pixel in enumerate(image_data):
+    print("RGBA({0}, {1}, {2}, {3})".format(pixel[0],pixel[1],pixel[2],pixel[3]), end=",")
+print("}","}")
+
+breakpoint()
+
 done = False
 while done == False:
     new_pixel = False
     for index, pixel in enumerate(image_data):
+        
+        
         if ((pixel[3]) < 128):
             continue
     
