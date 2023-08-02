@@ -1,15 +1,9 @@
 ## tmp-image-gen
-genereates images using textmeshpro tags in unity from .png files
-(for this to work i save .png files through paint.net as 32bit png's)
-
-i think this is bricked currently
-
+generates images using textmeshpro text in unity from .png files.
+<p>creates a .txt file in the execution directory with the file name of the image used.</p>
+<em><b>will overwrite any file with the same name and file extension without asking.</b></em>
 <br></br>
-### rewriting !!!
-rewrite file is .cpp file
 
-# next up:
-1. add libpng
-2. output file
-3. fix alignment issue 
-?. instead maybe have a mod in unity to insert it directly into tmp objects? pInvoke? rewrite c#?
+### potential improvements
+1. fix alignment issue 
+2. instead maybe have a mod in unity to insert it directly into tmp objects? pInvoke? rewrite c#? idk someone else do that
