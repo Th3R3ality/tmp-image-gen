@@ -22,8 +22,9 @@ std::string itohexstr(unsigned int i, unsigned int bytes = 2);
 struct RGBA
 {
 public:
-    int r, g, b, a;
+    unsigned char r, g, b, a;
 
+    RGBA() : r(0), g(0), b(0), a(0) {};
     RGBA(int _r, int _g, int _b, int _a) : r(_r), g(_g), b(_b), a(_a) {};
 
     bool operator==(RGBA& other)
@@ -58,7 +59,7 @@ public:
     TMPCommand(int x, int y, int size, RGBA color) : x(x), y(y), size(size), color(color) {};
 };
 
-void ReadPng(char* filePath);
+int ReadPng(char* filePath);
 
 std::vector<TMPCommand> CommandList;
 
@@ -194,62 +195,62 @@ int main(int argc, char** argv)
     }
     printf("created output file: %s\n", filePath);
 
-    ReadPng(imagePath);
+    if (!ReadPng(imagePath)) {
 
-    for (int i = 0; i < Img.width * Img.height; i++) {
-        printf("%u\t%u\n",Img.data[i].r, i);
-    }
+        int* processedPixels = new int[Img.width * Img.height];
+        memset(processedPixels, 0, Img.width * Img.height * sizeof(int));
 
-    int* processedPixels = new int[Img.width * Img.height];
-    memset(processedPixels, 0, Img.width * Img.height * sizeof(int));
+        for (int idx = 0; idx < Img.width * Img.height; idx++) {
+            int x = idx % Img.width;
+            int y = (int)(idx / Img.width);
 
-    for (int idx = 0; idx < Img.width * Img.height; idx++) {
-        int x = idx % Img.width;
-        int y = (int)(idx / Img.width);
+            if (SHOULD_TRY_OPTIMIZE) {
+                int optimizationLevel = GetOptimizationLevel(idx, processedPixels);
+                if (optimizationLevel != -1) {
+                    //printf("added command: %d    at (%d,%d)\n", optimizationLevel, x, y);
+                    CommandList.push_back(TMPCommand(x, y, optimizationLevel, Img.data[idx]));
+                }
 
-        if (SHOULD_TRY_OPTIMIZE) {
-            int optimizationLevel = GetOptimizationLevel(idx, processedPixels);
-            if (optimizationLevel != -1) {
-                //printf("added command: %d    at (%d,%d)\n", optimizationLevel, x, y);
-                CommandList.push_back(TMPCommand(x, y, optimizationLevel, Img.data[idx]));
+                MarkProcessedPixel(idx, optimizationLevel, processedPixels);
+                /*
+                if (x == 0)
+                    printf("\n");
+                printf(optimizationLevel == -1 ? "# " : "%d ", optimizationLevel);
+                */
             }
-
-
-            MarkProcessedPixel(idx, optimizationLevel, processedPixels);
-            if (x == 0)
-                printf("\n");
-            printf(optimizationLevel == -1 ? "# " : "%d ", optimizationLevel);
+            else {
+                CommandList.push_back(TMPCommand(x, y, 1, Img.data[idx]));
+            }
         }
-        else {
-            CommandList.push_back(TMPCommand(x, y, 1, Img.data[idx]));
-        }
-    }printf("\n");
+        //printf("\n");
 
-    printf("[");
-    for (auto& cmd : CommandList) {
-        printf("(%d, %d, %d, (%d,%d,%d,%d)),", cmd.x, cmd.y, cmd.size, cmd.color.r, cmd.color.g, cmd.color.b, cmd.color.a);
+        /*
+        printf("[");
+        for (auto& cmd : CommandList) {
+            printf("(%d, %d, %d, (%d,%d,%d,%d)),", cmd.x, cmd.y, cmd.size, cmd.color.r, cmd.color.g, cmd.color.b, cmd.color.a);
+        }
+        printf("]\n");
+        */
+
+        GenerateTMP();
+
+        delete[] processedPixels;
     }
-    printf("]\n");
-
-    GenerateTMP();
-
     delete[] filePath;
-    delete[] processedPixels;
 
     spng_ctx_free(ctx);
-    free(image);
 
     std::cout << "Done!\n";
 }
 
-void ReadPngError()
+int ReadPngError()
 {
     Img.width = 0;
     Img.height = 0;
-    Img.data = {};
+    Img.data.empty();
     spng_ctx_free(ctx);
     free(image);
-    return;
+    return 1;
 }
 
 const char* color_type_str(uint8_t color_type)
@@ -264,20 +265,20 @@ const char* color_type_str(uint8_t color_type)
     }
 }
 
-void ReadPng(char* filePath)
+int ReadPng(char* filePath)
 {
     fopen_s(&png, filePath, "rb");
 
     if (png == NULL) {
         printf("error opening input file %s\n", filePath);
-        ReadPngError();
+        return ReadPngError();
     }
 
     ctx = spng_ctx_new(0);
 
     if (ctx == NULL) {
         printf("spng_ctx_new() failed\n");
-        ReadPngError();
+        return ReadPngError();
     }
 
     /* Ignore and don't calculate chunk CRC's */
@@ -296,7 +297,7 @@ void ReadPng(char* filePath)
 
     if (ret) {
         printf("spng_get_ihdr() error: %s\n", spng_strerror(ret));
-        ReadPngError();
+        return ReadPngError();
     }
 
     const char* color_name = color_type_str(ihdr.color_type);
@@ -320,7 +321,7 @@ void ReadPng(char* filePath)
 
     if (ret && ret != SPNG_ECHUNKAVAIL) {
         printf("spng_get_plte() error: %s\n", spng_strerror(ret));
-        ReadPngError();
+        return ReadPngError();
     }
 
     if (!ret) printf("palette entries: %u\n", plte.n_entries);
@@ -340,13 +341,16 @@ void ReadPng(char* filePath)
 
     ret = spng_decoded_image_size(ctx, fmt, &image_size);
 
-    if (ret) ReadPngError();
+    if (ret) {
+        printf("spng_decoded_image_size() error\n");
+        return ReadPngError();
+    }
 
     //image = (unsigned char*)malloc(image_size);
-    Img.data.reserve(image_size);
+    Img.data.resize(image_size);
     image = (unsigned char*)Img.data.data();
 
-    if (image == NULL) ReadPngError();
+    if (image == NULL) return ReadPngError();
 
     /* Decode the image in one go */
      ret = spng_decode_image(ctx, image, image_size, SPNG_FMT_RGBA8, 0);
@@ -354,10 +358,11 @@ void ReadPng(char* filePath)
     if(ret)
     {
         printf("spng_decode_image() error: %s\n", spng_strerror(ret));
-        ReadPngError();
+        return ReadPngError();
     }
 
-    printf("Successfully read png data :)");
+    printf("Successfully read png data :)\n");
+    return 0;
 }
 
 int GetOptimizationLevel(int Idx, int* ProcessedPixelsList)
@@ -494,7 +499,6 @@ void GenerateTMP()
     }
 
     printf("\n");
-    std::cout << out << std::endl;
 }
 
 std::string itohexstr(unsigned int i, unsigned int bytes)
