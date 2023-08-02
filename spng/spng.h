@@ -2,10 +2,12 @@
 #ifndef SPNG_H
 #define SPNG_H
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#define SPNG_STATIC
 #if (defined(_WIN32) || defined(__CYGWIN__)) && !defined(SPNG_STATIC)
     #if defined(SPNG__BUILD)
         #define SPNG_API __declspec(dllexport)

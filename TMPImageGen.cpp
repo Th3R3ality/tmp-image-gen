@@ -12,7 +12,10 @@
 #include <vector>
 #include <string>
 
+
 #include "spng/spng.h"
+
+
 
 int GetOptimizationLevel(int Idx, int* ProcessedPixelsList);
 void MarkProcessedPixel(int Idx, int OptimizationLevel, int* ProcessedPixelsList);
@@ -247,7 +250,7 @@ int ReadPngError()
 {
     Img.width = 0;
     Img.height = 0;
-    Img.data.empty();
+    Img.data.clear();
     spng_ctx_free(ctx);
     free(image);
     return 1;
