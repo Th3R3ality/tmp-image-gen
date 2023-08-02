@@ -18,5 +18,22 @@
     <ClCompile Include="TMPImageGen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="spng\spng.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="spng\spng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="zlib\zlib1.dll" />
   </ItemGroup>
 </Project>

@@ -11,6 +11,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+
+#include "spng/spng.h"
+
 int GetOptimizationLevel(int Idx, int* ProcessedPixelsList);
 void MarkProcessedPixel(int Idx, int OptimizationLevel, int* ProcessedPixelsList);
 void GenerateTMP();
@@ -55,17 +58,24 @@ public:
     TMPCommand(int x, int y, int size, RGBA color) : x(x), y(y), size(size), color(color) {};
 };
 
+void ReadPng(char* filePath);
+
 std::vector<TMPCommand> CommandList;
 
 
-Image a = { 0, 0, {} };
-Image& Img = a;
+Image Img = { 0, 0, {} };
 
 char imagePath[MAX_PATH];
 FILE* outFile;
 
+FILE* png;
+int ret = 0;
+spng_ctx* ctx = NULL;
+unsigned char* image = NULL;
+
 int main(int argc, char** argv)
 {
+    
     printf("argc: %d\n", argc);
     for (int i = 0; i < argc; i++) {
         printf("argv[%d]: %s\n", i, argv[i]);
@@ -182,9 +192,9 @@ int main(int argc, char** argv)
     if (fopen_s(&outFile, filePath, "w")) {
         printf("***ERROR*** COULDN'T CREATE FILE: %s\n", filePath);
     }
-    printf("created file: %s\n", filePath);
+    printf("created output file: %s\n", filePath);
 
-
+    ReadPng(imagePath);
 
     for (int i = 0; i < Img.width * Img.height; i++) {
         printf("%u\t%u\n",Img.data[i].r, i);
@@ -225,7 +235,129 @@ int main(int argc, char** argv)
 
     delete[] filePath;
     delete[] processedPixels;
+
+    spng_ctx_free(ctx);
+    free(image);
+
     std::cout << "Done!\n";
+}
+
+void ReadPngError()
+{
+    Img.width = 0;
+    Img.height = 0;
+    Img.data = {};
+    spng_ctx_free(ctx);
+    free(image);
+    return;
+}
+
+const char* color_type_str(uint8_t color_type)
+{
+    switch ((spng_color_type)color_type) {
+    case SPNG_COLOR_TYPE_GRAYSCALE: return "grayscale";
+    case SPNG_COLOR_TYPE_TRUECOLOR: return "truecolor";
+    case SPNG_COLOR_TYPE_INDEXED: return "indexed color";
+    case SPNG_COLOR_TYPE_GRAYSCALE_ALPHA: return "grayscale with alpha";
+    case SPNG_COLOR_TYPE_TRUECOLOR_ALPHA: return "truecolor with alpha";
+    default: return "(invalid)";
+    }
+}
+
+void ReadPng(char* filePath)
+{
+    fopen_s(&png, filePath, "rb");
+
+    if (png == NULL) {
+        printf("error opening input file %s\n", filePath);
+        ReadPngError();
+    }
+
+    ctx = spng_ctx_new(0);
+
+    if (ctx == NULL) {
+        printf("spng_ctx_new() failed\n");
+        ReadPngError();
+    }
+
+    /* Ignore and don't calculate chunk CRC's */
+    spng_set_crc_action(ctx, SPNG_CRC_USE, SPNG_CRC_USE);
+
+    /* Set memory usage limits for storing standard and unknown chunks,
+       this is important when reading untrusted files! */
+    size_t limit = 1024 * 1024 * 64;
+    spng_set_chunk_limits(ctx, limit, limit);
+
+    /* Set source PNG */
+    spng_set_png_file(ctx, png); /* or _buffer(), _stream() */
+
+    struct spng_ihdr ihdr;
+    ret = spng_get_ihdr(ctx, &ihdr);
+
+    if (ret) {
+        printf("spng_get_ihdr() error: %s\n", spng_strerror(ret));
+        ReadPngError();
+    }
+
+    const char* color_name = color_type_str(ihdr.color_type);
+
+    printf("width: %u\n"
+        "height: %u\n"
+        "bit depth: %u\n"
+        "color type: %u - %s\n",
+        ihdr.width, ihdr.height, ihdr.bit_depth, ihdr.color_type, color_name);
+
+    Img.width = ihdr.width;
+    Img.height = ihdr.height;
+
+    printf("compression method: %u\n"
+        "filter method: %u\n"
+        "interlace method: %u\n",
+        ihdr.compression_method, ihdr.filter_method, ihdr.interlace_method);
+
+    struct spng_plte plte = { 0 };
+    ret = spng_get_plte(ctx, &plte);
+
+    if (ret && ret != SPNG_ECHUNKAVAIL) {
+        printf("spng_get_plte() error: %s\n", spng_strerror(ret));
+        ReadPngError();
+    }
+
+    if (!ret) printf("palette entries: %u\n", plte.n_entries);
+
+
+    size_t image_size;
+
+    /* Output format, does not depend on source PNG format except for
+       SPNG_FMT_PNG, which is the PNG's format in host-endian or
+       big-endian for SPNG_FMT_RAW.
+       Note that for these two formats <8-bit images are left byte-packed */
+    int fmt = SPNG_FMT_PNG;
+
+    /* With SPNG_FMT_PNG indexed color images are output as palette indices,
+       pick another format to expand them. */
+    if (ihdr.color_type == SPNG_COLOR_TYPE_INDEXED) fmt = SPNG_FMT_RGB8;
+
+    ret = spng_decoded_image_size(ctx, fmt, &image_size);
+
+    if (ret) ReadPngError();
+
+    //image = (unsigned char*)malloc(image_size);
+    Img.data.reserve(image_size);
+    image = (unsigned char*)Img.data.data();
+
+    if (image == NULL) ReadPngError();
+
+    /* Decode the image in one go */
+     ret = spng_decode_image(ctx, image, image_size, SPNG_FMT_RGBA8, 0);
+
+    if(ret)
+    {
+        printf("spng_decode_image() error: %s\n", spng_strerror(ret));
+        ReadPngError();
+    }
+
+    printf("Successfully read png data :)");
 }
 
 int GetOptimizationLevel(int Idx, int* ProcessedPixelsList)
