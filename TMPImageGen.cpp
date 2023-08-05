@@ -81,11 +81,6 @@ double OffsetX = 0, OffsetY = 0;
 int main(int argc, char** argv)
 {
     
-    printf("argc: %d\n", argc);
-    for (int i = 0; i < argc; i++) {
-        printf("argv[%d]: %s\n", i, argv[i]);
-    }
-
     bool pathFromArgv = false;
     if (argc > 1) {
         {
@@ -94,8 +89,9 @@ int main(int argc, char** argv)
                 printf("image path copied from first arg: \"%s\"\n", imagePath);
                 pathFromArgv = true;
             }
-
+            
             printf("checking args for settins\n");
+            printf("argc: %d", argc);
             for (int i = 0; i < argc; i++) {
                 printf("argv[%d]: %s\n", i, argv[i]);
                 if (!strncmp(argv[i], "-x", 2)) {
