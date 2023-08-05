@@ -76,6 +76,7 @@ FILE* png;
 int ret = 0;
 spng_ctx* ctx = NULL;
 unsigned char* image = NULL;
+double OffsetX = 0, OffsetY = 0;
 
 int main(int argc, char** argv)
 {
@@ -85,7 +86,46 @@ int main(int argc, char** argv)
         printf("argv[%d]: %s\n", i, argv[i]);
     }
 
-    if (argc <= 1) {
+    bool pathFromArgv = false;
+    if (argc > 1) {
+        {
+            if (argv[1][1] == ':') {
+                memcpy(imagePath, argv[1], strlen(argv[1]));
+                printf("image path copied from first arg: \"%s\"\n", imagePath);
+                pathFromArgv = true;
+            }
+
+            printf("checking args for settins\n");
+            for (int i = 0; i < argc; i++) {
+                printf("argv[%d]: %s\n", i, argv[i]);
+                if (!strncmp(argv[i], "-x", 2)) {
+                    OffsetX = static_cast<double>(atoi(argv[i] + 2));
+                    continue;
+                }
+                if (!strncmp(argv[i], "-y", 2)) {
+                    OffsetY = static_cast<double>(atoi(argv[i] + 2));
+                    continue;
+                }
+                if (!strcmp(argv[i], "-AskOffset")) {
+                    char tempBuf[256];
+
+                    ZeroMemory(tempBuf, 256);
+                    printf("x offset: ");
+                    std::cin >> tempBuf;
+                    printf("\n");
+                    OffsetX = atoi(tempBuf);
+
+                    ZeroMemory(tempBuf, 256);
+                    printf("y offset: ");
+                    std::cin >> tempBuf;
+                    printf("\n");
+                    OffsetY = atoi(tempBuf);
+                    continue;
+                }
+            }
+        }
+    }
+    if (!pathFromArgv) {
         OPENFILENAMEA ofn;
         ZeroMemory(&imagePath, sizeof(imagePath));
         ZeroMemory(&ofn, sizeof(ofn));
@@ -122,10 +162,6 @@ int main(int argc, char** argv)
             }
             return 1;
         }
-    }
-    else {
-        memcpy(imagePath, argv[1], strlen(argv[1]));
-        printf("image file selected: \"%s\"\n", imagePath);
     }
 
     char* filePath = 0;
@@ -461,7 +497,7 @@ void GenerateTMP()
         if (y != cmd.y || size != cmd.size) {
             y = cmd.y;
 
-            double voffset = (y * SymbolHeight) / cmd.size;
+            double voffset = (y * SymbolHeight + OffsetY) / cmd.size;
 
             if (cmd.size > 1) {
                 voffset += SymbolYFixBase;
@@ -475,12 +511,12 @@ void GenerateTMP()
                 }
             }
 
-            out = "<voffset=-" + std::to_string(voffset) + "e>\n";
+            out = "<voffset=" + std::to_string(-voffset) + "e>\n";
             fwrite(out.c_str(), out.length(), 1, outFile);
         }
 
 
-        double pos = (cmd.x * SymbolWidth) / cmd.size;
+        double pos = (cmd.x * SymbolWidth + OffsetX) / cmd.size;
         if (cmd.size > 1) {
             pos += SymbolXFixBase;
             double fixer = SymbolXFixMargin;
