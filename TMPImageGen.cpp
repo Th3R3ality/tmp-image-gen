@@ -80,7 +80,10 @@ double OffsetX = 0, OffsetY = 0;
 
 int main(int argc, char** argv)
 {
-    
+    char execPath[MAX_PATH] = { 0 };
+    GetModuleFileNameA(NULL, execPath, MAX_PATH);
+    printf("\ngot executable path: %s\n", execPath);
+
     bool pathFromArgv = false;
     if (argc > 1) {
         {
@@ -90,8 +93,8 @@ int main(int argc, char** argv)
                 pathFromArgv = true;
             }
             
-            printf("checking args for settins\n");
-            printf("argc: %d", argc);
+            printf("checking args\n");
+            printf("argc: %d\n", argc);
             for (int i = 0; i < argc; i++) {
                 printf("argv[%d]: %s\n", i, argv[i]);
                 if (!strncmp(argv[i], "-x", 2)) {
@@ -198,7 +201,7 @@ int main(int argc, char** argv)
             stage += 1;
         }
         if (stage == 4) {
-            if (argv[0][idx] == '\0') {
+            if (execPath[idx] == '\0') {
                 stage += 1;
             }
             else {
@@ -207,10 +210,10 @@ int main(int argc, char** argv)
             }
         }
         if (stage == 5) {
-            if (argv[0][idx] == '\\') {
+            if (execPath[idx] == '\\') {
                 filePath = new char[idx + 1 + (fileNameEnd - fileNameStart + 1) + 1 + 4];
                 ZeroMemory(filePath, idx + 1 + (fileNameEnd - fileNameStart + 1) + 1 + 4);
-                memcpy(filePath, argv[0], idx + 1);
+                memcpy(filePath, execPath, idx + 1);
                 memcpy(filePath + idx + 1, imagePath + fileNameStart, fileNameEnd - fileNameStart + 1);
                 memcpy(filePath + idx + 1 + (fileNameEnd - fileNameStart + 1), ".txt", 4);
                 printf("assembled path: %s\n", filePath);
