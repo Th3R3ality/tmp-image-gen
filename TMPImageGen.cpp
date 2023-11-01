@@ -13,6 +13,7 @@
 #include <string>
 
 
+#pragma comment(lib, "spng.lib")
 #include "spng/spng.h"
 
 

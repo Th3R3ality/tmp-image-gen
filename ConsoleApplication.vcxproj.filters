@@ -18,9 +18,6 @@
     <ClCompile Include="TMPImageGen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="spng\spng.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="spng\spng.h">
@@ -35,5 +32,6 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib\zlib.lib" />
+    <Library Include="spng\spng.lib" />
   </ItemGroup>
 </Project>

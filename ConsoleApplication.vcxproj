@@ -145,10 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="spng\spng.c">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(ProjectDir)zlib\;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(ProjectDir)zlib\;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
-    </ClCompile>
     <ClCompile Include="TMPImageGen.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
@@ -160,6 +156,7 @@
     <ClInclude Include="zlib\zlib.h" />
   </ItemGroup>
   <ItemGroup>
+    <Library Include="spng\spng.lib" />
     <Library Include="zlib\zlib.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
